@@ -73,8 +73,10 @@ def car_start():
 	return "start"
 
 
-@app.route('/sensor')
+@app.route('/sensor', methods=['POST'])
 def car_sensor():
+	data = request.get_json()
+	print data
 	return "sensor"
 
 
