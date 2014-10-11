@@ -8,7 +8,7 @@ while True:
     try:
         state = urllib2.urlopen("http://hackzurich.beta.scapp.io/arduino/status").read()
         ser.write(state)
-        print state
+        print state,
         time.sleep(0.5)
     except:
         print 'down?'
