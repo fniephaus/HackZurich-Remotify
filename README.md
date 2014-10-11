@@ -9,3 +9,8 @@ This prototype for Android Wearables has been developed during the HackZurich Ha
 * [Fabio Niephaus](https://github.com/fniephaus)
 * [Leo Kotschenreuther](https://github.com/LeoKotschenreuther)
 * [Stephan Schultz](https://github.com/Steppschuh)
+
+# Dependencies
+* [Flask](http://flask.pocoo.org/)
+* [Adafruit NeoPixel](https://github.com/adafruit/Adafruit_NeoPixel)
+* [appscript](http://appscript.sourceforge.net/)
