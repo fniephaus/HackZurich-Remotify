@@ -47,7 +47,7 @@ void reconnect()
 
   if (client.connect("hackzurich.beta.scapp.io", 80)) {
     // Serial.println("connected");
-    client.println("GET /0/light HTTP/1.0");
+    client.println("GET /arduino/status HTTP/1.0");
     client.println("Host: hackzurich.beta.scapp.io");
     client.println();
   } else {

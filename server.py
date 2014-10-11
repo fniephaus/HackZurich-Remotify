@@ -1,68 +1,52 @@
 import os
-import controller
 
 from flask import Flask, request
 app = Flask(__name__)
-devices = controller.Controller()
 
-@app.route('/hello_world', methods=["GET"])
-def hello_world():
-    return 'Hello World!'
+arduino_status = 0
+pc_status = 0
 
-@app.route('/echo', methods=["GET", "POST"])
-def echo():
-    if request.method == 'POST':
-    	return request.form['test']
 
-@app.route('/<int:param>/light', methods=["GET"])
-def light(param):
-	device = devices.getDevice(param)
-	if device == "KeyError":
-		return "Device is not registered!"
-	return device.getLight()
+@app.route('/')
+def index():
+	return 'Remote Control Server'
 
-@app.route('/<int:param>/toggle', methods=["GET"])
-def toggle(param):
-	device = devices.getDevice(param)
-	if device == "KeyError":
-		return "Device is not registered!"
-	device.toggleLight()
-	return "Light is toggled and now at value " + devices.getDevice(param).getLight()
 
-@app.route('/<int:param>/0', methods=["GET"])
-def next(param):
-	device = devices.getDevice(param)
-	if device == "KeyError":
-		return "Device is not registered!"
-	device.next()
+@app.route('/arduino/status')
+def arduino():
+	global arduino_status
+	return str(arduino_status)
+
+
+@app.route('/arduino/toggle')
+def arduino_toggle():
+	global arduino_status
+	arduino_status = 1 if arduino_status == 0 else 0
+	return "Light now at value %s" % arduino_status
+
+
+@app.route('/pc/status')
+def pc():
+	global pc_status
+	tmp = pc_status
+	pc_status = 0
+	return str(tmp)
+
+
+@app.route('/pc/next')
+def itunes_next():
+	global pc_status
+	pc_status = 1
 	return "Next song!"
 
-@app.route('/<int:param>/1', methods=["GET"])
-def previous(param):
-	device = devices.getDevice(param)
-	if device == "KeyError":
-		return "Device is not registered!"
-	device.previous()
+
+@app.route('/pc/prev')
+def itunes_previous():
+	global pc_status
+	pc_status = 2
 	return "Previous song!"
 
-@app.route('/<int:param>/music', methods=["GET"])
-def music(param):
-	device = devices.getDevice(param)
-	if device == "KeyError":
-		return "Device is not registered!"
-	action = device.getMusic()
-	device.reset()
-	return action
-
-@app.route('/register', methods=["POST"])
-def register():
-	if request.form['device'] == 'Arduino':
-		return str(devices.addDevice(request.form['device']))
-	else:
-		return "Device not supported!"
 
 if __name__ == "__main__":
-    port = os.getenv('VCAP_APP_PORT', '5000')
-    app.run(host='0.0.0.0', port=int(port), debug=True)
-
-   
+	port = os.getenv('VCAP_APP_PORT', '5000')
+	app.run(host='0.0.0.0', port=int(port), debug=True)
