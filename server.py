@@ -16,16 +16,43 @@ def echo():
 
 @app.route('/<int:param>/light', methods=["GET"])
 def light(param):
-	return devices.getDevice(param).getLight()
+	device = devices.getDevice(param)
+	if device == "KeyError":
+		return "Device is not registered!"
+	return device.getLight()
 
 @app.route('/<int:param>/toggle', methods=["GET"])
 def toggle(param):
 	device = devices.getDevice(param)
-	print device
 	if device == "KeyError":
 		return "Device is not registered!"
 	device.toggleLight()
 	return "Light is toggled and now at value " + devices.getDevice(param).getLight()
+
+@app.route('/<int:param>/0', methods=["GET"])
+def next(param):
+	device = devices.getDevice(param)
+	if device == "KeyError":
+		return "Device is not registered!"
+	device.next()
+	return "Next song!"
+
+@app.route('/<int:param>/1', methods=["GET"])
+def previous(param):
+	device = devices.getDevice(param)
+	if device == "KeyError":
+		return "Device is not registered!"
+	device.previous()
+	return "Previous song!"
+
+@app.route('/<int:param>/music', methods=["GET"])
+def music(param):
+	device = devices.getDevice(param)
+	if device == "KeyError":
+		return "Device is not registered!"
+	action = device.getMusic()
+	device.reset()
+	return action
 
 @app.route('/register', methods=["POST"])
 def register():
