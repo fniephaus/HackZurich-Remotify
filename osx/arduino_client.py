@@ -10,6 +10,6 @@ while True:
         ser.write(state)
         print state
         time.sleep(0.5)
-    except KeyError:
+    except:
         print 'down?'
         time.sleep(0.5)
