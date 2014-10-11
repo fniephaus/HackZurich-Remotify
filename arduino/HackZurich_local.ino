@@ -58,7 +58,7 @@ void turnOn()
 
 void turnOff()
 {
-  for(int j=0; j<149; j++) {
+  for(int j=0; j<150; j++) {
     for(int i=0;i<NUMPIXELS;i++){
       switch(colorID){
         case 1:
@@ -73,9 +73,6 @@ void turnOff()
     }
     pixels.show();
     delay(5);
-  }
-  for(int i=0;i<NUMPIXELS;i++){
-    pixels.setPixelColor(i, 0);
   }
 }
 
