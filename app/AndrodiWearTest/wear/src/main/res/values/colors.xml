@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="background_gray">#666666</color>
+    <color name="white_overlay">#99FFFFFF</color>
+    <color name="blue_button">#FF1a69ff</color>
+</resources>
