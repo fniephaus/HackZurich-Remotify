@@ -18,14 +18,23 @@ def index():
 @app.route('/arduino/status')
 def arduino():
 	global arduino_status
-	return str(arduino_status)
+	tmp = arduino_status
+	arduino_status = 0
+	return str(tmp)
 
 
 @app.route('/arduino/toggle')
 def arduino_toggle():
 	global arduino_status
-	arduino_status = 1 if arduino_status == 0 else 0
-	return "Light now at value %s" % arduino_status
+	arduino_status = 1
+	return "Light toggled"
+
+
+@app.route('/arduino/next')
+def arduino_next():
+	global arduino_status
+	arduino_status = 2
+	return "Next color"
 
 
 @app.route('/car/fast')
