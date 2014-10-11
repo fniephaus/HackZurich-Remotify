@@ -92,7 +92,6 @@ def car_sensor():
 	global car_speed
 	data = request.get_json()
 	print data
-	car_speed = int(0.4 * 250)
 	return str(car_speed)
 
 
