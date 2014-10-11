@@ -9,6 +9,8 @@ app = Flask(__name__)
 arduino_status = 0
 pc_status = 0
 
+car_speed = 0
+
 
 @app.route('/')
 def index():
@@ -39,13 +41,15 @@ def arduino_next():
 
 @app.route('/car/fast')
 def car_fast():
-	car_sendSpeed(100)
+	global car_speed
+	car_speed = int(0.7 * 250)
 	return "fast"
 
 
 @app.route('/car/slow')
 def car_slow():
-	car_sendSpeed(30)
+	global car_speed
+	car_speed = int(0.4 * 250)
 	return "slow"
 
 
@@ -78,31 +82,18 @@ def car_ping():
 
 @app.route('/start', methods=['POST'])
 def car_start():
-	car_sendSpeed(30)
-	return "start"
+	global car_speed
+	car_speed = int(0.4 * 250)
+	return str(car_speed)
 
 
 @app.route('/sensor', methods=['POST'])
 def car_sensor():
+	global car_speed
 	data = request.get_json()
 	print data
-	return "sensor"
-
-
-def car_sendSpeed(percentage):
-	speed = int(percentage * 2.5)
-	data = {
-		"teamId": "hpi",
-		"accessCode": "1234",
-		"power": speed,
-		"timeStamp": time.time()
-	}
-	print data
-
-	req = urllib2.Request('http://carrera-relay.beta.swisscloud.io/ws/rest/relay/speed')
-	req.add_header('Content-Type', 'application/json')
-
-	response = urllib2.urlopen(req, json.dumps(data))
+	car_speed = int(0.4 * 250)
+	return str(car_speed)
 
 
 if __name__ == "__main__":
