@@ -93,14 +93,10 @@ def car_sensor():
 	global car_speed
 	data = request.get_json()
 	print data
-	if car_acceleration == True:
-		car_speed = car_speed + 5
-		if car_speed > max_speed:
-			car_speed = max_speed
+	if car_acceleration:
+		car_speed = min(car_speed + 5, max_speed)
 	else:
-		car_speed = car_speed - 5
-		if car_speed < min_speed:
-			car_speed = min_speed
+		car_speed = max(car_speed - 5, min_speed)
 	return str(car_speed)
 
 
