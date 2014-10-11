@@ -1,4 +1,7 @@
 import os
+import json
+import time
+import urllib2
 
 from flask import Flask, request
 app = Flask(__name__)
@@ -25,6 +28,18 @@ def arduino_toggle():
 	return "Light now at value %s" % arduino_status
 
 
+@app.route('/car/fast')
+def car_fast():
+	car_sendSpeed(100)
+	return "fast"
+
+
+@app.route('/car/slow')
+def car_slow():
+	car_sendSpeed(30)
+	return "slow"
+
+
 @app.route('/pc/status')
 def pc():
 	global pc_status
@@ -45,6 +60,38 @@ def itunes_previous():
 	global pc_status
 	pc_status = 2
 	return "Previous song!"
+
+
+@app.route('/ping')
+def car_ping():
+	return "success"
+
+
+@app.route('/start', methods=['POST'])
+def car_start():
+	car_sendSpeed(30)
+	return "start"
+
+
+@app.route('/sensor')
+def car_sensor():
+	return "sensor"
+
+
+def car_sendSpeed(percentage):
+	speed = int(percentage * 2.5)
+	data = {
+		"teamId": "hpi",
+		"accessCode": "1234",
+		"power": speed,
+		"timeStamp": time.time()
+	}
+	print data
+
+	req = urllib2.Request('http://carrera-relay.beta.swisscloud.io/ws/rest/relay/speed')
+	req.add_header('Content-Type', 'application/json')
+
+	response = urllib2.urlopen(req, json.dumps(data))
 
 
 if __name__ == "__main__":
