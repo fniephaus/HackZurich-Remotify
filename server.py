@@ -9,7 +9,10 @@ app = Flask(__name__)
 arduino_status = 0
 pc_status = 0
 
-car_speed = 0
+car_acceleration = False
+car_speed = 100
+min_speed = 100
+max_speed = 200
 
 
 @app.route('/')
@@ -41,15 +44,15 @@ def arduino_next():
 
 @app.route('/car/fast')
 def car_fast():
-	global car_speed
-	car_speed = int(0.7 * 250)
+	global car_acceleration
+	car_acceleration = True
 	return "fast"
 
 
 @app.route('/car/slow')
 def car_slow():
-	global car_speed
-	car_speed = int(0.4 * 250)
+	global car_acceleration
+	car_acceleration = False
 	return "slow"
 
 
@@ -82,9 +85,7 @@ def car_ping():
 
 @app.route('/start', methods=['POST'])
 def car_start():
-	global car_speed
-	car_speed = int(0.4 * 250)
-	return str(car_speed)
+	return "100"
 
 
 @app.route('/sensor', methods=['POST'])
@@ -92,6 +93,14 @@ def car_sensor():
 	global car_speed
 	data = request.get_json()
 	print data
+	if car_acceleration == True:
+		car_speed = car_speed + 5
+		if car_speed > max_speed:
+			car_speed = max_speed
+	else:
+		car_speed = car_speed - 5
+		if car_speed < min_speed:
+			car_speed = min_speed
 	return str(car_speed)
 
 
