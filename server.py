@@ -7,6 +7,7 @@ from flask import Flask, request
 app = Flask(__name__)
 
 arduino_status = 0
+emulator_status = 0
 pc_status = 0
 
 car_acceleration = False
@@ -27,18 +28,27 @@ def arduino():
 	arduino_status = 0
 	return str(tmp)
 
+@app.route('/emulator/status')
+def emulator():
+	global emulator_status
+	tmp = emulator_status
+	emulator_status = 0
+	return str(tmp)
+
 
 @app.route('/arduino/toggle')
 def arduino_toggle():
-	global arduino_status
+	global arduino_status, emulator_status
 	arduino_status = 1
+	emulator_status = 1
 	return "Light toggled"
 
 
 @app.route('/arduino/next')
 def arduino_next():
-	global arduino_status
+	global arduino_status, emulator_status
 	arduino_status = 2
+	emulator_status = 2
 	return "Next color"
 
 
