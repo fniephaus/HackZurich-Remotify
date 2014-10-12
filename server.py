@@ -9,6 +9,7 @@ app = Flask(__name__)
 arduino_status = 0
 emulator_status = 0
 pc_status = 0
+mac_status = 0
 
 car_acceleration = False
 car_speed = 100
@@ -74,17 +75,27 @@ def pc():
 	return str(tmp)
 
 
+@app.route('/mac/status')
+def pc():
+	global mac_status
+	tmp = mac_status
+	mac_status = 0
+	return str(tmp)
+
+
 @app.route('/pc/next')
 def itunes_next():
-	global pc_status
+	global pc_status, mac_status
 	pc_status = 1
+	mac_status = 1
 	return "Next song!"
 
 
 @app.route('/pc/prev')
 def itunes_previous():
-	global pc_status
+	global pc_status, mac_status
 	pc_status = 2
+	mac_status = 2
 	return "Previous song!"
 
 
