@@ -76,7 +76,7 @@ def pc():
 
 
 @app.route('/mac/status')
-def pc():
+def mac():
 	global mac_status
 	tmp = mac_status
 	mac_status = 0
